@@ -21,8 +21,8 @@ enter your password and exit (type exit -> enter)
 ---
 #### Create partitions
 `cfdisk /dev/nvme0n1`  
-1 512MB EFI partition  
-2 100% size partiton(to be encrypted)  
+1. 512MB EFI partition --> `/dev/nvme0n1p1`  
+2. The rest of the space will be encrypted --> `/dev/nvme0n1p2`  
 
 ---
 #### Create EFI partition

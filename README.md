@@ -56,7 +56,7 @@ Archlinux encrypted (LUKS) install guide
 `pacstrap /mnt base base-devel zsh vim git sudo efibootmgr iwd linux linux-headers linux-firmware` 
 
 ---
-#### 'install' fstab
+#### Install fstab
 `genfstab -pU /mnt >> /mnt/etc/fstab`  
 
 ---
@@ -68,61 +68,71 @@ Archlinux encrypted (LUKS) install guide
 
 ---
 #### Enter the new system
-`arch-chroot /mnt`
+`arch-chroot /mnt`  
 
+---
 #### Setup system clock
-ln -s /usr/share/zoneinfo/Europe/Zurich /etc/localtime
-hwclock --systohc --utc
+`ln -s /usr/share/zoneinfo/Europe/Zurich /etc/localtime`
+`hwclock --systohc --utc`
+
+---
 
 #### Set the hostname
-echo MYHOSTNAME > /etc/hostname
+`echo MYHOSTNAME > /etc/hostname`  
 
-#### Generate locale
-#Uncomment wanted locales in /etc/locale.gen
-vim /etc/locale.gen
-locale-gen
-localectl set-locale LANG=en_US.UTF-8
+---
+### Generate locale
+#### Uncomment wanted locales in /etc/locale.gen
+`vim /etc/locale.gen`  
+`locale-gen`  
+`localectl set-locale LANG=en_US.UTF-8`  
 
-#To avoid problems with gnome-terminal set locale system wide
-#Do NOT set LC_ALL=C. It overrides all the locale vars and messes up special characters
-#Pay attention to the UTF-8. Capital letters !
-echo LANG=en_US.UTF-8 >> /etc/locale.conf
-echo LC_ALL= >> /etc/locale.conf
+---
+#### To avoid problems with gnome-terminal set locale system wide
+`echo LANG=en_US.UTF-8 >> /etc/locale.conf`
+`echo LC_ALL= >> /etc/locale.conf`
 
-
+ ---
 #### Set password for root
-passwd
+`passwd`  
+`useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME`  
+`passwd MYUSERNAME`  
 
-#### Add real user remove -s flag if you don't whish to use zsh
-#### useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME
-#### passwd MYUSERNAME
-
+---
 #### Configure mkinitcpio with modules needed for the initrd image
-vim /etc/mkinitcpio.conf
-#### Add 'ext4' to MODULES
-#### Add 'encrypt' and 'lvm2' to HOOKS before filesystems
-#### Add 'resume' after 'lvm2' (also has to be after 'udev')
+`vim /etc/mkinitcpio.conf`
+Add 'ext4' to MODULES  
+Add 'encrypt' and 'lvm2' to HOOKS before filesystems  
+Add 'resume' after 'lvm2' (also has to be after 'udev')  
 
+---
 #### Regenerate initrd image
-mkinitcpio -p linux
+`mkinitcpio -p linux`
 
+---
 #### Setup systembootd (grub will not work on nvme at this moment)
-bootctl --path=/boot install
+`bootctl --path=/boot install`
 
+---
 #### Create loader.conf
-echo 'default arch' >> /boot/loader/loader.conf
-echo 'timeout 5' >> /boot/loader/loader.conf
+`echo 'default arch' >> /boot/loader/loader.conf`
+`echo 'timeout 5' >> /boot/loader/loader.conf`
 
-#### Create arch.conf (or XYZ.conf for default XYZ in loader.conf)
-vim /boot/loader/entries/arch.conf
+---
+#### Create arch.conf
+`vim /boot/loader/entries/arch.conf`
+
+---
 
 #### Add the following content to arch.conf
 #### <UUID> is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the 'blkid' command
+```
 title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw intel_pstate=no_hwp
-
+```
+---
 #### Exit new system and go into the cd shell
 exit
 

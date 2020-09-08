@@ -99,10 +99,10 @@ Archlinux encrypted (LUKS) install guide
 `passwd MYUSERNAME`  
 
 ---
-#### Configure mkinitcpio with modules needed for the initrd image
-`vim /etc/mkinitcpio.conf`
+#### Configure mkinitcpio with modules needed for the initrd image  
+`vim /etc/mkinitcpio.conf`  
 Add 'ext4' to MODULES  
-Add 'encrypt' and 'lvm2' to HOOKS before filesystems  
+Add 'encrypt' and 'lvm2' to HOOKS before filesystems   
 Add 'resume' after 'lvm2' (also has to be after 'udev')  
 
 ---

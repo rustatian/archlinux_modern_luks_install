@@ -1,4 +1,4 @@
-# archlinux_modern_luks_install
+# archlinux modern luks install
 Archlinux encrypted (LUKS) install guide
 
 

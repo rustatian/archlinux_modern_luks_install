@@ -7,26 +7,26 @@ Archlinux encrypted (LUKS) install guide
 ---
 #### Download the archiso image from https://www.archlinux.org/
 #### Copy to a usb-drive
-dd if=archlinux.img of=/dev/sdX bs=16M && sync # on linux
+`dd if=archlinux.img of=/dev/sdX bs=16M && sync # on linux`
 #### Or for the GUI install you can use etcher from https://www.balena.io/etcher/
 ---
 #### This assumes a wifi only system... (wifi-menu removed from the installer image since June 2020)
-iwctl
-station list
-station <generally wlan0> connect <wifi network name SSID>
-enter your password and exit (type exit -> enter)
+`iwctl`
+`station list`
+`station <generally wlan0> connect <wifi network name SSID>`
+`enter your password and exit (type exit -> enter)`
 ---
 #### Create partitions
-cfdisk /dev/nvme0n1
+`cfdisk /dev/nvme0n1`
 1 512MB EFI partition
 2 100% size partiton(to be encrypted)
 ---
 #### Create EFI partition
-mkfs.fat -F32 /dev/nvme0n1p1
+`mkfs.fat -F32 /dev/nvme0n1p1`
 
 #### Setup the encryption of the system with 256 bit effective size
-cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2 [link](https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Cryptsetup_usage)
-cryptsetup luksOpen /dev/nvme0n1p2 luks
+`cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2` [link](https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Cryptsetup_usage)
+`cryptsetup luksOpen /dev/nvme0n1p2 luks`
 
 #### Create encrypted partitions
 #### This creates one partions for root, modify if /home or other partitions should be on separate partitions

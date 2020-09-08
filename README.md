@@ -26,39 +26,49 @@ Archlinux encrypted (LUKS) install guide
 #### Create EFI partition
 `mkfs.fat -F32 /dev/nvme0n1p1`
 
+---
 #### Setup the encryption of the system with 256 bit effective size
 `cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2` [link](https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Cryptsetup_usage)
 `cryptsetup luksOpen /dev/nvme0n1p2 luks`
 
+---
 #### Create encrypted partitions
 #### This creates one partions for root, modify if /home or other partitions should be on separate partitions
-pvcreate /dev/mapper/luks
-vgcreate vg0 /dev/mapper/luks
-lvcreate --size 16G vg0 --name swap (If you are planning to use deep_sleep or hybernate, you should set size to the Ram * 1.5)
-lvcreate -l +100%FREE vg0 --name root
+`pvcreate /dev/mapper/luks`
+`vgcreate vg0 /dev/mapper/luks`
+`lvcreate --size 16G vg0 --name swap (If you are planning to use deep_sleep or hybernate, you should set size to the Ram * 1.5)`
+`lvcreate -l +100%FREE vg0 --name root`
 
+---
 #### Create filesystems on encrypted partitions
-mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root)
-mkswap /dev/mapper/vg0-swap
+`mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root)`
+`mkswap /dev/mapper/vg0-swap`
 
+---
 #### Mount the new system 
-mount /dev/mapper/vg0-root /mnt # /mnt is the installed system
-swapon /dev/mapper/vg0-swap # Not needed but a good thing to test
-mkdir /mnt/boot
-mount /dev/nvme0n1p1 /mnt/boot
+`mount /dev/mapper/vg0-root /mnt # /mnt is the installed system`  
+`swapon /dev/mapper/vg0-swap # Not needed but a good thing to test`  
+`mkdir /mnt/boot`  
+`mount /dev/nvme0n1p1 /mnt/boot`  
 
+---
 #### Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
-#### Unless vim and zsh are desired these can be removed from the command. Dialog is needed by wifi-menu
-pacstrap /mnt base base-devel zsh vim git sudo efibootmgr iwd linux linux-headers linux-firmware
+`pacstrap /mnt base base-devel zsh vim git sudo efibootmgr iwd linux linux-headers linux-firmware` 
 
+---
 #### 'install' fstab
-genfstab -pU /mnt >> /mnt/etc/fstab
+`genfstab -pU /mnt >> /mnt/etc/fstab`  
+
+---
 #### Make /tmp a ramdisk (add the following line to /mnt/etc/fstab)
-tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0
+`tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0`  
+
+---
 #### Change relatime on all non-boot partitions to noatime (reduces wear if using an SSD)
 
+---
 #### Enter the new system
-arch-chroot /mnt /bin/bash
+`arch-chroot /mnt`
 
 #### Setup system clock
 ln -s /usr/share/zoneinfo/Europe/Zurich /etc/localtime

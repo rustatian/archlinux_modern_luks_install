@@ -10,11 +10,6 @@ Archlinux encrypted (LUKS) install guide
 dd if=archlinux.img of=/dev/sdX bs=16M && sync # on linux
 #### Or for the GUI install you can use etcher from https://www.balena.io/etcher/
 ---
-#### Boot from the usb. If the usb fails to boot, make sure that secure boot is disabled in the BIOS configuration.
-
-#### Set swiss-french keymap
-loadkeys fr_CH-latin1
----
 #### This assumes a wifi only system... (wifi-menu removed from the installer image since June 2020)
 iwctl
 station list

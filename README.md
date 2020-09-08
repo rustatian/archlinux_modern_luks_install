@@ -1,7 +1,6 @@
 # archlinux modern luks install
 Archlinux encrypted (LUKS) install guide
 
-
 #### Install ARCH Linux with encrypted file-system and UEFI
 #### The official installation guide (https://wiki.archlinux.org/index.php/Installation_Guide) contains a more verbose description.
 ---
@@ -9,12 +8,15 @@ Archlinux encrypted (LUKS) install guide
 #### Copy to a usb-drive
 `dd if=archlinux.img of=/dev/sdX bs=16M && sync # on linux`
 #### Or for the GUI install you can use etcher from https://www.balena.io/etcher/  
+
 ---
 #### This assumes a wifi only system... (wifi-menu removed from the installer image since June 2020)  
-`iwctl`  
-`station list`  
-`station <generally wlan0> connect <wifi network name SSID>`  
-`enter your password and exit (type exit -> enter)`  
+```
+iwctl 
+station list
+station <generally wlan0> connect <wifi network name SSID>
+enter your password and exit (type exit -> enter)
+```
 
 ---
 #### Create partitions
@@ -28,28 +30,36 @@ Archlinux encrypted (LUKS) install guide
 
 ---
 #### Setup the encryption of the system with 256 bit effective size
-`cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2` [link](https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Cryptsetup_usage)
-`cryptsetup luksOpen /dev/nvme0n1p2 luks`
+```
+cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2
+cryptsetup luksOpen /dev/nvme0n1p2 luks
+```
 
 ---
 #### Create encrypted partitions
 #### This creates one partions for root, modify if /home or other partitions should be on separate partitions  
-`pvcreate /dev/mapper/luks`  
-`vgcreate vg0 /dev/mapper/luks`  
-`lvcreate --size 16G vg0 --name swap (If you are planning to use deep_sleep or hybernate, you should set size to the Ram * 1.5)`  
-`lvcreate -l +100%FREE vg0 --name root`  
+```
+pvcreate /dev/mapper/luks
+vgcreate vg0 /dev/mapper/luks
+lvcreate --size 16G vg0 --name swap (If you are planning to use deep_sleep or hybernate, you should set size to the Ram * 1.5)
+lvcreate -l +100%FREE vg0 --name root
+```  
 
 ---
 #### Create filesystems on encrypted partitions  
-`mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root)`  
-`mkswap /dev/mapper/vg0-swap`  
+```
+mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root)  
+mkswap /dev/mapper/vg0-swap
+```  
 
 ---
 #### Mount the new system 
-`mount /dev/mapper/vg0-root /mnt # /mnt is the installed system`  
-`swapon /dev/mapper/vg0-swap # Not needed but a good thing to test`  
-`mkdir /mnt/boot`  
-`mount /dev/nvme0n1p1 /mnt/boot`  
+```
+mount /dev/mapper/vg0-root /mnt # /mnt is the installed system
+swapon /dev/mapper/vg0-swap # Not needed but a good thing to test
+mkdir /mnt/boot
+mount /dev/nvme0n1p1 /mnt/boot
+```  
 
 ---
 #### Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
@@ -72,8 +82,10 @@ Archlinux encrypted (LUKS) install guide
 
 ---
 #### Setup system clock
-`ln -s /usr/share/zoneinfo/Europe/Zurich /etc/localtime`
-`hwclock --systohc --utc`
+```
+ln -s /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+hwclock --systohc --utc
+```
 
 ---
 
@@ -83,20 +95,26 @@ Archlinux encrypted (LUKS) install guide
 ---
 ### Generate locale
 #### Uncomment wanted locales in /etc/locale.gen
-`vim /etc/locale.gen`  
-`locale-gen`  
-`localectl set-locale LANG=en_US.UTF-8`  
+```
+vim /etc/locale.gen
+locale-gen
+localectl set-locale LANG=en_US.UTF-8
+```
 
 ---
 #### To avoid problems with gnome-terminal set locale system wide
-`echo LANG=en_US.UTF-8 >> /etc/locale.conf`
-`echo LC_ALL= >> /etc/locale.conf`
+```
+echo LANG=en_US.UTF-8 >> /etc/locale.conf
+echo LC_ALL= >> /etc/locale.conf
+```
 
  ---
 #### Set password for root
-`passwd`  
-`useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME`  
-`passwd MYUSERNAME`  
+```
+passwd
+useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME
+passwd MYUSERNAME
+```  
 
 ---
 #### Configure mkinitcpio with modules needed for the initrd image  
@@ -134,11 +152,15 @@ options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper
 ```
 ---
 #### Exit new system and go into the cd shell
-exit
+`exit`
 
+---
 #### Unmount all partitions
+```
 umount -R /mnt
 swapoff -a
+```
 
+---
 #### Reboot into the new system, don't forget to remove the cd/usb
-reboot
+`reboot`

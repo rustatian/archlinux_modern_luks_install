@@ -63,7 +63,7 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 ---
 #### Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
-`pacstrap /mnt base base-devel zsh vim git sudo efibootmgr iwd linux linux-headers linux-firmware` 
+`pacstrap /mnt base base-devel zsh vim neovim git sudo efibootmgr iwd dhcpcd lvm2 linux linux-headers linux-firmware` 
 
 ---
 #### Install fstab
@@ -74,16 +74,13 @@ mount /dev/nvme0n1p1 /mnt/boot
 `tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0`  
 
 ---
-#### Change relatime on all non-boot partitions to noatime (reduces wear if using an SSD)
-
----
 #### Enter the new system
 `arch-chroot /mnt`  
 
 ---
 #### Setup system clock
 ```
-ln -s /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Minsk /etc/localtime <USE YOUR CITY>
 hwclock --systohc --utc
 ```
 
@@ -105,7 +102,6 @@ localectl set-locale LANG=en_US.UTF-8
 #### To avoid problems with gnome-terminal set locale system wide
 ```
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
-echo LC_ALL= >> /etc/locale.conf
 ```
 
  ---
@@ -114,6 +110,8 @@ echo LC_ALL= >> /etc/locale.conf
 passwd
 useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME
 passwd MYUSERNAME
+
+type visudo -> enter -> uncomment the following line --> %wheel ALL=(ALL) ALL
 ```  
 
 ---
@@ -133,8 +131,10 @@ Add `resume` after `lvm2` (also has to be after `udev`)
 
 ---
 #### Create loader.conf
-`echo 'default arch' >> /boot/loader/loader.conf`
-`echo 'timeout 5' >> /boot/loader/loader.conf`
+```
+echo 'default arch' >> /boot/loader/loader.conf
+echo 'timeout 5' >> /boot/loader/loader.conf
+```
 
 ---
 #### Create arch.conf
@@ -143,13 +143,29 @@ Add `resume` after `lvm2` (also has to be after `udev`)
 ---
 
 #### Add the following content to arch.conf
-#### <UUID> is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the 'blkid' command
+<UUID> is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the `blkid` command
+Use echo to put UUID into /boot/loader/entries/arch.conf.
 ```
 title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw intel_pstate=no_hwp
 ```
+ 
+---
+#### Install favorite DE (I use xfce4)
+```
+pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-greeter pulseaudio pulseaudio-bluetooth blueman bluez bluez-utils networkmanager network-manager-applet
+
+pulseaudio-bluetooth blueman bluez bluez-utils used to setup bluetooth
+```
+ 
+---
+#### Enable services
+```
+systemctl enable lightdm bluetooth iwd dhcpcd NetworkManager
+```
+
 ---
 #### Exit new system and go into the cd shell
 `exit`

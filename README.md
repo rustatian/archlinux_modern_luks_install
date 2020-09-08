@@ -143,7 +143,7 @@ echo 'timeout 5' >> /boot/loader/loader.conf
 ---
 
 #### Add the following content to arch.conf  
-<UUID> is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the `blkid` command
+UUID is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the `blkid` command
 Use echo to put UUID into /boot/loader/entries/arch.conf.
 ```
 title Arch Linux

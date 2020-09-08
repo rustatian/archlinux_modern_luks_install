@@ -33,16 +33,16 @@ Archlinux encrypted (LUKS) install guide
 
 ---
 #### Create encrypted partitions
-#### This creates one partions for root, modify if /home or other partitions should be on separate partitions
-`pvcreate /dev/mapper/luks`
-`vgcreate vg0 /dev/mapper/luks`
-`lvcreate --size 16G vg0 --name swap (If you are planning to use deep_sleep or hybernate, you should set size to the Ram * 1.5)`
-`lvcreate -l +100%FREE vg0 --name root`
+#### This creates one partions for root, modify if /home or other partitions should be on separate partitions  
+`pvcreate /dev/mapper/luks`  
+`vgcreate vg0 /dev/mapper/luks`  
+`lvcreate --size 16G vg0 --name swap (If you are planning to use deep_sleep or hybernate, you should set size to the Ram * 1.5)`  
+`lvcreate -l +100%FREE vg0 --name root`  
 
 ---
-#### Create filesystems on encrypted partitions
-`mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root)`
-`mkswap /dev/mapper/vg0-swap`
+#### Create filesystems on encrypted partitions  
+`mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root)`  
+`mkswap /dev/mapper/vg0-swap`  
 
 ---
 #### Mount the new system 

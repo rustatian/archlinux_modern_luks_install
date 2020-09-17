@@ -126,7 +126,7 @@ Add `resume` AFTER `lvm2` (also has to be after `udev`)
 `mkinitcpio -P`
 
 ---
-#### Setup systembootd (grub will not work on nvme at this moment)
+#### Setup systembootd
 `bootctl --path=/boot install`
 
 ---

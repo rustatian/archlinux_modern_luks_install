@@ -111,19 +111,19 @@ passwd
 useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME
 passwd MYUSERNAME
 
-type visudo -> enter -> uncomment the following line --> %wheel ALL=(ALL) ALL
+visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 ```  
 
 ---
-#### Configure mkinitcpio with modules needed for the initrd image  
+#### Configure mkinitcpio with modules needed for the initrd image  (ORDER MATTERS!)
 `vim /etc/mkinitcpio.conf`  
 Add `ext4` to MODULES  
-Add `encrypt` and `lvm2` to HOOKS before filesystems   
-Add `resume` after `lvm2` (also has to be after `udev`)  
+Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   
+Add `resume` AFTER `lvm2` (also has to be after `udev`)  
 
 ---
 #### Regenerate initrd image
-`mkinitcpio -p linux`
+`mkinitcpio -P`
 
 ---
 #### Setup systembootd (grub will not work on nvme at this moment)
@@ -144,7 +144,7 @@ echo 'timeout 5' >> /boot/loader/loader.conf
 
 #### Add the following content to arch.conf  
 UUID is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the `blkid` command
-Use echo to put UUID into /boot/loader/entries/arch.conf.
+TIP: Use echo to put UUID into /boot/loader/entries/arch.conf.
 ```
 title Arch Linux
 linux /vmlinuz-linux
@@ -159,11 +159,21 @@ pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-gr
 
 pulseaudio-bluetooth blueman bluez bluez-utils used to setup bluetooth
 ```
+
+#### Or GNOME
+```
+pacman -S gnome gnome-extra pulseaudio-bluetooth blueman bluez bluez-utils
+```
  
 ---
 #### Enable services
 ```
 systemctl enable lightdm bluetooth iwd dhcpcd NetworkManager
+```
+
+#### Or in case of GNOME:
+```
+systemctl enable gdm bluetooth iwd dhcpcd NetworkManager
 ```
 
 ---

@@ -149,7 +149,7 @@ TIP: Use echo to put UUID into /boot/loader/entries/arch.conf.
 title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw intel_pstate=no_hwp
+options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw zswap.enabled=1
 ```
  
 ---

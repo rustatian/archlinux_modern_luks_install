@@ -29,7 +29,7 @@ enter your password and exit (type exit -> enter)
 `mkfs.fat -F32 /dev/nvme0n1p1`
 
 ---
-#### Setup the encryption of the system with 256 bit effective size
+#### Setup the encryption of the system with 512 bit effective size
 ```
 cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2
 cryptsetup luksOpen /dev/nvme0n1p2 luks
@@ -80,14 +80,14 @@ mount /dev/nvme0n1p1 /mnt/boot
 ---
 #### Setup system clock
 ```
-ln -s /usr/share/zoneinfo/Europe/Minsk /etc/localtime <USE YOUR CITY>
+ln -s /usr/share/zoneinfo/Europe/Minsk /etc/localtime <USE YOUR CITY!>
 hwclock --systohc --utc
 ```
 
 ---
 
 #### Set the hostname
-`echo MYHOSTNAME > /etc/hostname`  
+`echo <YOU HOST NAME> /etc/hostname`  
 
 ---
 ### Generate locale
@@ -96,19 +96,13 @@ hwclock --systohc --utc
 vim /etc/locale.gen
 locale-gen
 localectl set-locale LANG=en_US.UTF-8
-```
-
----
-#### To avoid problems with gnome-terminal set locale system wide
-```
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 ```
-
  ---
-#### Set password for root
+#### Set password for root and add user
 ```
 passwd
-useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME
+useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME (or /bin/bash)
 passwd MYUSERNAME
 
 visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
@@ -117,7 +111,7 @@ visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 ---
 #### Configure mkinitcpio with modules needed for the initrd image  (ORDER MATTERS!)
 `vim /etc/mkinitcpio.conf`  
-Add `ext4` to MODULES  
+Add `ext4` to MODULES (or xfs). Also, if you want to see the password screen when laptop lid is closed add `i915` (Intel) to the modules
 Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   
 Add `resume` AFTER `lvm2` (also has to be after `udev`)  
 

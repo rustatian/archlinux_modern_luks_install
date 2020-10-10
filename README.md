@@ -102,8 +102,8 @@ echo LANG=en_US.UTF-8 >> /etc/locale.conf
 #### Set password for root and add user
 ```
 passwd
-useradd -m -g users -G wheel,storage,power -s /bin/zsh MYUSERNAME (or /bin/bash)
-passwd MYUSERNAME
+useradd -mg users -G wheel,storage,power -s /bin/zsh <MYUSERNAME> (or /bin/bash)
+passwd <MYUSERNAME>
 
 visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 ```  

@@ -114,6 +114,8 @@ visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 Add `ext4` to MODULES (or xfs). Also, if you want to see the password screen when laptop lid is closed add `i915` (Intel) to the modules
 Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   
 Add `resume` AFTER `lvm2` (also has to be after `udev`)  
+There is my hooks `HOOKS=(base udev autodetect modconf block encrypt lvm2 resume filesystems keyboard fsck)`  
+And modules `MODULES=(i915 xfs)`  
 
 ---
 #### Regenerate initrd image

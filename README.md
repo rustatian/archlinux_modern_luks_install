@@ -87,7 +87,7 @@ hwclock --systohc --utc
 ---
 
 #### Set the hostname
-`echo <YOU HOST NAME> /etc/hostname`  
+`echo <YOU HOST NAME> > /etc/hostname`  
 
 ---
 ### Generate locale

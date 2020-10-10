@@ -71,7 +71,7 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 ---
 #### Make /tmp a ramdisk (add the following line to /mnt/etc/fstab)
-`tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0`  
+`tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0` you can also specify a size for the /tmp. To do that, just put after `defaults` `size=xG` where x is the needed size.  
 
 ---
 #### Enter the new system

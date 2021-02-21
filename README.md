@@ -14,7 +14,7 @@ Archlinux encrypted (LUKS) install guide
 ```
 iwctl 
 station list
-station <generally wlan0> connect <wifi network name SSID>
+station <generally wlan0> connect <wifi network name SSID> -> station wlan0 connect 0xdev
 enter your password and exit (type exit -> enter)
 ```
 

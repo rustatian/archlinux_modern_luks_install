@@ -1,4 +1,4 @@
-# archlinux modern luks install
+# Archlinux encrupted (with LVM) install
 Archlinux encrypted (LUKS) install guide
 
 #### Install ARCH Linux with encrypted file-system and UEFI

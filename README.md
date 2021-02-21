@@ -19,7 +19,7 @@ enter your password and exit (type exit -> enter)
 ```
 
 ---
-#### Create partitions
+#### Create partitions (nvme in case of NVME disk or sda in case of HDD)
 `cfdisk /dev/nvme0n1`  
 1. 512MB EFI partition --> `/dev/nvme0n1p1`  
 2. The rest of the space will be encrypted --> `/dev/nvme0n1p2`  

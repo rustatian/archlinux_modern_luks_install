@@ -96,7 +96,7 @@ hwclock --systohc --utc
 vim /etc/locale.gen
 locale-gen
 localectl set-locale LANG=en_US.UTF-8
-echo LANG=en_US.UTF-8 >> /etc/locale.conf
+echo LANG=en_US.UTF-8 >> /etc/locale.conf (important for GNOME)
 ```
  ---
 #### 16. Set password for root and add user
@@ -106,6 +106,9 @@ useradd -mg users -G wheel,storage,power -s /bin/zsh <MYUSERNAME> (or /bin/bash)
 passwd <MYUSERNAME>
 
 visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
+
+Defaults timestamp_type=global (use sudo globally)
+Defaults timestamp_timeout=15 (sudo timeout)
 ```  
 
 ---

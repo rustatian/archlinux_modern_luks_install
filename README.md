@@ -5,12 +5,12 @@ Archlinux encrypted (LUKS) install guide
 #### The official installation guide (https://wiki.archlinux.org/index.php/Installation_Guide) contains a more verbose description.
 ---
 #### Download the archiso image from https://www.archlinux.org/
-#### Copy to a usb-drive
+#### 1 .Copy to a usb-drive
 `dd if=archlinux.img of=/dev/sdX bs=16M && sync # on linux`
 #### Or for the GUI install you can use etcher from https://www.balena.io/etcher/  
 
 ---
-#### This assumes a wifi only system... (wifi-menu removed from the installer image since June 2020)  
+#### 2. This assumes a wifi only system... (wifi-menu removed from the installer image since June 2020)  
 ```
 iwctl 
 station list
@@ -19,13 +19,13 @@ enter your password and exit (type exit -> enter)
 ```
 
 ---
-#### Create partitions (nvme in case of NVME disk or sda in case of HDD)
+#### 3. Create partitions (nvme in case of NVME disk or sda in case of HDD)
 `cfdisk /dev/nvme0n1`  
 1. 512MB EFI partition --> `/dev/nvme0n1p1`  
 2. The rest of the space will be encrypted --> `/dev/nvme0n1p2`  
 
 ---
-#### Create EFI partition
+#### 4. Create EFI partition
 `mkfs.fat -F32 /dev/nvme0n1p1`
 
 ---

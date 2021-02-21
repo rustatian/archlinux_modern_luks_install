@@ -29,7 +29,7 @@ enter your password and exit (type exit -> enter)
 `mkfs.fat -F32 /dev/nvme0n1p1`
 
 ---
-#### Setup the encryption of the system with 512 bit effective size
+#### 5. Setup the encryption of the system with 512 bit effective size
 ```
 cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2
 cryptsetup luksOpen /dev/nvme0n1p2 luks
@@ -37,7 +37,7 @@ cryptsetup luksOpen /dev/nvme0n1p2 luks
 
 ---
 #### Create encrypted partitions
-#### This creates one partions for root, modify if /home or other partitions should be on separate partitions  
+#### 6. This creates one partions for root, modify if /home or other partitions should be on separate partitions  
 ```
 pvcreate /dev/mapper/luks
 vgcreate vg0 /dev/mapper/luks
@@ -46,14 +46,14 @@ lvcreate -l +100%FREE vg0 --name root
 ```  
 
 ---
-#### Create filesystems on encrypted partitions  
+#### 7. Create filesystems on encrypted partitions  
 ```
 mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root, but in case of xfs you also should install xfsprogs)  
 mkswap /dev/mapper/vg0-swap
 ```  
 
 ---
-#### Mount the new system 
+#### 8. Mount the new system 
 ```
 mount /dev/mapper/vg0-root /mnt # /mnt is the installed system
 swapon /dev/mapper/vg0-swap # Not needed but a good thing to test
@@ -62,23 +62,23 @@ mount /dev/nvme0n1p1 /mnt/boot
 ```  
 
 ---
-#### Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
+#### 9. Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
 `pacstrap /mnt base base-devel zsh vim neovim git sudo efibootmgr iwd dhcpcd lvm2 linux linux-headers linux-firmware` + `xfsprogs` in case of XFS filesystem
 
 ---
-#### Install fstab
+#### 10. Install fstab
 `genfstab -pU /mnt >> /mnt/etc/fstab`  
 
 ---
-#### Make /tmp a ramdisk (add the following line to /mnt/etc/fstab)
+#### 11. Make /tmp a ramdisk (add the following line to /mnt/etc/fstab)
 `tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0` you can also specify a size for the /tmp. To do that, just put after `defaults` `size=xG` where x is the needed size.  
 
 ---
-#### Enter the new system
+#### 12. Enter the new system
 `arch-chroot /mnt`  
 
 ---
-#### Setup system clock
+#### 13. Setup system clock
 ```
 ln -s /usr/share/zoneinfo/Europe/Minsk /etc/localtime <USE YOUR CITY!>
 hwclock --systohc --utc
@@ -86,12 +86,12 @@ hwclock --systohc --utc
 
 ---
 
-#### Set the hostname
+#### 14. Set the hostname
 `echo <YOU HOST NAME> > /etc/hostname`  
 
 ---
 ### Generate locale
-#### Uncomment wanted locales in /etc/locale.gen
+#### 15. Uncomment wanted locales in /etc/locale.gen
 ```
 vim /etc/locale.gen
 locale-gen
@@ -99,7 +99,7 @@ localectl set-locale LANG=en_US.UTF-8
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 ```
  ---
-#### Set password for root and add user
+#### 16. Set password for root and add user
 ```
 passwd
 useradd -mg users -G wheel,storage,power -s /bin/zsh <MYUSERNAME> (or /bin/bash)
@@ -109,7 +109,7 @@ visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 ```  
 
 ---
-#### Configure mkinitcpio with modules needed for the initrd image  (ORDER MATTERS!)
+#### 17. Configure mkinitcpio with modules needed for the initrd image  (ORDER MATTERS!)
 `vim /etc/mkinitcpio.conf`  
 Add `ext4` to MODULES (or xfs). Also, if you want to see the password screen when laptop lid is closed add `i915` (Intel) to the modules
 Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   
@@ -118,27 +118,27 @@ There is my hooks `HOOKS=(base udev autodetect modconf block encrypt lvm2 resume
 And modules `MODULES=(i915 xfs)`  
 
 ---
-#### Regenerate initrd image
+#### 18. Regenerate initrd image
 `mkinitcpio -P`
 
 ---
-#### Setup systembootd
+#### 19. Setup systembootd
 `bootctl --path=/boot install`
 
 ---
-#### Create loader.conf
+#### 20. Create loader.conf
 ```
 echo 'default arch' >> /boot/loader/loader.conf
 echo 'timeout 5' >> /boot/loader/loader.conf
 ```
 
 ---
-#### Create arch.conf
+#### 21. Create arch.conf
 `vim /boot/loader/entries/arch.conf`
 
 ---
 
-#### Add the following content to arch.conf  
+#### 22. Add the following content to arch.conf  
 UUID is the the one of the raw encrypted device (/dev/nvme0n1p2). It can be found with the `blkid` command
 TIP: Use echo to put UUID into /boot/loader/entries/arch.conf.
 ```
@@ -149,7 +149,7 @@ options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper
 ```
  
 ---
-#### Install favorite DE (I use xfce4)
+#### 23. Install favorite DE (I use xfce4)
 ```
 pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-greeter pulseaudio pulseaudio-bluetooth blueman bluez bluez-utils networkmanager network-manager-applet
 
@@ -162,7 +162,7 @@ pacman -S gnome gnome-extra pulseaudio-bluetooth blueman bluez bluez-utils
 ```
  
 ---
-#### Enable services
+#### 24. Enable services
 ```
 systemctl enable lightdm bluetooth iwd dhcpcd NetworkManager
 ```
@@ -173,16 +173,16 @@ systemctl enable gdm bluetooth iwd dhcpcd NetworkManager
 ```
 
 ---
-#### Exit new system and go into the cd shell
+#### 25. Exit new system and go into the cd shell
 `exit`
 
 ---
-#### Unmount all partitions
+#### 26. Unmount all partitions
 ```
 umount -R /mnt
 swapoff -a
 ```
 
 ---
-#### Reboot into the new system, don't forget to remove the cd/usb
+#### 27. Reboot into the new system, don't forget to remove the cd/usb
 `reboot`

@@ -12,9 +12,9 @@ Archlinux encrypted (LUKS) install guide
 ---
 #### 2. This assumes a wifi only system... (wifi-menu removed from the installer image since June 2020)  
 ```
-iwctl 
-station list
-station <generally wlan0> connect <wifi network name SSID> -> station wlan0 connect 0xdev
+1. iwctl 
+2. station list
+3. station <generally wlan0> connect <wifi network name SSID> -> station wlan0 connect 0xdev
 enter your password and exit (type exit -> enter)
 ```
 
@@ -22,7 +22,7 @@ enter your password and exit (type exit -> enter)
 #### 3. Create partitions (nvme in case of NVME disk or sda in case of HDD)
 `cfdisk /dev/nvme0n1`  
 1. 512MB EFI partition --> `/dev/nvme0n1p1`  
-2. The rest of the space will be encrypted --> `/dev/nvme0n1p2`  
+2. The rest of the space will be encrypted --> `/dev/nvme0n1p2` (action later)   
 
 ---
 #### 4. Create EFI partition

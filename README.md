@@ -118,7 +118,7 @@ Add `ext4` to MODULES (or xfs). Also, if you want to see the password screen whe
 Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   
 Add `resume` AFTER `lvm2` (also has to be after `udev`)  
 There is my hooks `HOOKS=(base udev autodetect modconf block encrypt lvm2 resume filesystems keyboard fsck)`  
-And modules `MODULES=(i915 xfs)`  
+And modules `MODULES=(i915 xfs)`  or in case of nvidia you may add `nvidia, nvidia_modeset, nvidia_uvm and nvidia_drm`
 
 ---
 #### 18. Regenerate initrd image
@@ -148,7 +148,7 @@ TIP: Use echo to put UUID into /boot/loader/entries/arch.conf.
 title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw zswap.enabled=1
+options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw nvidia-drm.modeset=1
 ```
  
 ---

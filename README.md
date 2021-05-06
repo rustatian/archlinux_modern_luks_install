@@ -48,7 +48,7 @@ lvcreate -l +100%FREE vg0 --name root
 ---
 #### 7. Create filesystems on encrypted partitions  
 ```
-mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root, but in case of xfs you also should install xfsprogs)  
+mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root, but in case of xfs you also should install xfsprogs) or mkfs.btrfs (btrfs-progs)  
 mkswap /dev/mapper/vg0-swap
 ```  
 

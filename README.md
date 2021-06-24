@@ -47,6 +47,8 @@ lvcreate -l +100%FREE vg0 --name root
 
 #### OR for the BTRFS:
 ```
+mkfs.btrfs /dev/mapper/luks
+
 mount /dev/mapper/luks /mnt  
 btrfs subvolume create /mnt/@  
 btrfs subvolume create /mnt/@home  
@@ -57,12 +59,7 @@ mount -o subvol=@,ssd,compress=lzo,noatime,nodiratime /dev/mapper/luks /mnt
 mkdir /mnt/{boot,home}  
 mount -o subvol=@home,ssd,compress=lzo,noatime,nodiratime /dev/mapper/luks /mnt/home  
 
----
 
-title Arch Linux [48d90782]
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw nvidia-drm.modeset=1 
 ```
 
 ---
@@ -73,7 +70,7 @@ mkswap /dev/mapper/vg0-swap
 ```  
 
 ---
-#### 8. Mount the new system 
+#### 8. Mount the new system (NOT NEEDED FOR THE BTRFS)
 ```
 mount /dev/mapper/vg0-root /mnt # /mnt is the installed system
 swapon /dev/mapper/vg0-swap # Not needed but a good thing to test
@@ -83,11 +80,29 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 ---
 #### 9. Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
-`pacstrap /mnt base base-devel zsh vim neovim git sudo efibootmgr iwd dhcpcd lvm2 linux linux-headers linux-firmware` + `xfsprogs` in case of XFS filesystem
+`pacstrap /mnt base base-devel fish vim neovim git sudo efibootmgr dhcpcd lvm2 linux linux-headers linux-firmware` + `xfsprogs` in case of XFS filesystem or `btrfs-progs` in case of BTRFS.
 
 ---
 #### 10. Install fstab
 `genfstab -pU /mnt >> /mnt/etc/fstab`  
+
+Sample for the BTRFS
+```
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/mapper/luks
+UUID=4c0e019e-b646-477a-94d2-e4c35ddda975	/         	btrfs     	rw,noatime,nodiratime,compress=lzo,ssd,discard=async,space_cache,subvolid=256,subvol=/@	0 0
+
+# /dev/nvme0n1p1
+UUID=A819-B261      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+# /dev/mapper/luks
+UUID=4c0e019e-b646-477a-94d2-e4c35ddda975	/home     	btrfs     	rw,noatime,nodiratime,compress=lzo,ssd,discard=async,space_cache,subvolid=257,subvol=/@home	0 0
+
+# /dev/nvme0n1p2
+UUID=2f7c1bfe-fb5a-43b3-9104-3b015bc57f81	none      	swap      	defaults  	0 0
+
+tmpfs /tmp tmpfs defaults,size=40G,noatime,mode=1777 0 0
+```
 
 ---
 #### 11. Make /tmp a ramdisk (add the following line to /mnt/etc/fstab)
@@ -134,11 +149,11 @@ Defaults timestamp_timeout=15 (sudo timeout)
 ---
 #### 17. Configure mkinitcpio with modules needed for the initrd image  (ORDER MATTERS!)
 `vim /etc/mkinitcpio.conf`  
-Add `ext4` to MODULES (or xfs). Also, if you want to see the password screen when laptop lid is closed add `i915` (Intel) to the modules
-Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   
+Add `ext4` to MODULES (or xfs, btrfs). Also, if you want to see the password screen when laptop lid is closed add `i915` (Intel) to the modules
+Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   (only for the LVM)
 Add `resume` AFTER `lvm2` (also has to be after `udev`)  
 There is my hooks `HOOKS=(base udev autodetect modconf block encrypt lvm2 resume filesystems keyboard fsck)`  
-And modules `MODULES=(i915 xfs)`  or in case of nvidia you may add `nvidia, nvidia_modeset, nvidia_uvm and nvidia_drm`
+And modules `MODULES=()` -> in case of nvidia you may add `nvidia, nvidia_modeset, nvidia_uvm and nvidia_drm`
 
 ---
 #### 18. Regenerate initrd image
@@ -169,25 +184,32 @@ title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper/vg0-swap rw nvidia-drm.modeset=1
+
+---
+BTRFS
+title Arch Linux [48d90782]
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw nvidia-drm.modeset=1 
 ```
  
 ---
 #### 23. Install favorite DE (I use xfce4)
 ```
-pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-greeter pulseaudio pulseaudio-bluetooth blueman bluez bluez-utils networkmanager network-manager-applet
+pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-greeter pulseaudio pulseaudio-bluetooth blueman bluez bluez-utils networkmanager network-manager-applet gvfs gnome-keyring seahorse docker docker-compose llvm lldb gdb lld cmake perf strace tcpdump lsof iotop xdg-user-dirs xdg-utils ttf-font-awesome qemu libvirt
 
 pulseaudio-bluetooth blueman bluez bluez-utils used to setup bluetooth
 ```
 
 #### Or GNOME
 ```
-pacman -S gnome gnome-extra pulseaudio-bluetooth blueman bluez bluez-utils
+pacman -S gnome gnome-extra pulseaudio-bluetooth bluez bluez-utils
 ```
  
 ---
 #### 24. Enable services
 ```
-systemctl enable lightdm bluetooth iwd dhcpcd NetworkManager
+systemctl enable lightdm bluetooth dhcpcd NetworkManager docker libvirtd
 ```
 
 #### Or in case of GNOME:

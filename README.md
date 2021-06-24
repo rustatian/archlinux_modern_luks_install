@@ -23,6 +23,7 @@ enter your password and exit (type exit -> enter)
 `cfdisk /dev/nvme0n1`  
 1. 512MB EFI partition --> `/dev/nvme0n1p1`  
 2. The rest of the space will be encrypted --> `/dev/nvme0n1p2` (action later)   
+3. In case of BTRFS you'll need 3 partitions, boot (EFI), swap and root (with home).
 
 ---
 #### 4. Create EFI partition

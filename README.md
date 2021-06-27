@@ -188,7 +188,7 @@ options cryptdevice=UUID=<UUID>:vg0 root=/dev/mapper/vg0-root resume=/dev/mapper
 
 ---
 BTRFS
-title Arch Linux [48d90782]
+title Arch Linux [rustatian]
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw nvidia-drm.modeset=1 
@@ -210,12 +210,12 @@ pacman -S gnome gnome-extra pulseaudio-bluetooth bluez bluez-utils
 ---
 #### 24. Enable services
 ```
-systemctl enable lightdm bluetooth dhcpcd NetworkManager docker libvirtd
+systemctl enable lightdm bluetooth NetworkManager docker libvirtd systemd-networkd
 ```
 
 #### Or in case of GNOME:
 ```
-systemctl enable gdm bluetooth iwd dhcpcd NetworkManager
+systemctl enable gdm bluetooth NetworkManager systemd-networkd libvirtd docker
 ```
 
 ---

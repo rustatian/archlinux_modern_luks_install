@@ -60,7 +60,7 @@ mount -o subvol=@,ssd,compress=lzo,discard=async,noatime,nodiratime /dev/mapper/
 mkdir /mnt/{boot,home}  
 mount -o subvol=@home,ssd,compress=lzo,discard=async,noatime,nodiratime /dev/mapper/luks /mnt/home  
 
-
+mount /dev/nvme0n1p1 /mnt/boot
 ```
 
 ---

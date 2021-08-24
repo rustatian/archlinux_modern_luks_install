@@ -143,8 +143,8 @@ passwd <MYUSERNAME>
 
 visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 
-Defaults timestamp_type=global (use sudo globally)
-Defaults timestamp_timeout=15 (sudo timeout)
+Defaults timestamp_type=global
+Defaults timestamp_timeout=15
 ```  
 
 ---
@@ -155,6 +155,7 @@ Add `encrypt` and `lvm2` to HOOKS BEFORE filesystems   (only for the LVM)
 Add `resume` AFTER `lvm2` (also has to be after `udev`)  
 There is my hooks `HOOKS=(base udev autodetect modconf block encrypt lvm2 resume filesystems keyboard fsck)`  
 And modules `MODULES=()` -> in case of nvidia you may add `nvidia, nvidia_modeset, nvidia_uvm and nvidia_drm`
+And modules `MODULES=()` -> in case of AMD you may add `amdgpu radeon`
 
 ---
 #### 18. Regenerate initrd image
@@ -192,6 +193,8 @@ title Arch Linux [rustatian]
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw nvidia-drm.modeset=1 
+OR for the AMD
+options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw radeon.si_support=0 radeon.cik_support=0 amdgpu.cik_support=1 amdgpu.si_support=1 amdgpu.dpm=1 amdgpu.ppfeaturemask=<EXECUTE printf "0x%08x\n" $(cat /sys/module/amdgpu/parameters/ppfeaturemask)">
 ```
  
 ---

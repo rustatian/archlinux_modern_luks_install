@@ -213,12 +213,17 @@ pacman -S gnome gnome-extra pulseaudio-bluetooth bluez bluez-utils
 ---
 #### 24. Enable services
 ```
-systemctl enable lightdm bluetooth NetworkManager docker libvirtd systemd-networkd
+systemctl enable lightdm bluetooth NetworkManager docker libvirtd systemd-timesyncd
 ```
 
 #### Or in case of GNOME:
 ```
-systemctl enable gdm bluetooth NetworkManager systemd-networkd libvirtd docker
+systemctl enable gdm bluetooth NetworkManager systemd-timesyncd libvirtd docker
+```
+
+#### Docker
+```
+usermod -aG docker <YOU USERNAME>
 ```
 
 ---

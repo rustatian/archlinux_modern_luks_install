@@ -1,5 +1,5 @@
 1. Create the key file (`/root/.keyfile-1`), actually, you may choose any place  
-`dd if=/dev/urandom of=/boot/keyfile bs=1024 count=4`
+`dd if=/dev/urandom of=/root/keyfile bs=1024 count=4`
 2. PERMISSIONS: `chmod 0400 /root/.keyfile-1`  
 3. Add key: `cryptsetup -v luksAddKey /dev/<DISK> /root/.keyfile-1`  
 4. Update `/etc/crypttab`. You can grab disk UUIDs via `blkid`    

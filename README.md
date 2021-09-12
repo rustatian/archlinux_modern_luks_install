@@ -198,12 +198,13 @@ options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discard
 ```
  
 ---
-#### 23. Install favorite DE (I use xfce4)
+#### 23. Install DE
+### XFCE:
 ```
 pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-greeter pipewire pipewire-pulse blueman bluez bluez-utils networkmanager network-manager-applet gvfs gnome-keyring seahorse docker docker-compose llvm lldb gdb lld cmake perf strace tcpdump lsof iotop xdg-user-dirs xdg-utils ttf-font-awesome qemu libvirt
 ```
 
-#### Or GNOME
+### GNOME
 ```
 pacman -S gnome gnome-extra bluez bluez-utils pipewire pipewire-pulse blueman bluez bluez-utils networkmanager network-manager-applet gvfs gnome-keyring seahorse docker docker-compose llvm lldb gdb lld cmake perf strace tcpdump lsof iotop xdg-user-dirs xdg-utils ttf-font-awesome qemu libvirt
 ```

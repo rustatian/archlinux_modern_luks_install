@@ -206,7 +206,7 @@ pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-gr
 
 ### GNOME
 ```
-pacman -S gnome gnome-extra bluez bluez-utils pipewire pipewire-pulse blueman bluez bluez-utils networkmanager network-manager-applet gvfs gnome-keyring seahorse docker docker-compose llvm lldb gdb lld cmake perf strace tcpdump lsof iotop xdg-user-dirs xdg-utils ttf-font-awesome qemu libvirt
+pacman -S gnome gnome-extra bluez bluez-utils pipewire pipewire-pulse networkmanager network-manager-applet gvfs gnome-keyring seahorse docker docker-compose llvm lldb gdb lld cmake perf strace tcpdump lsof iotop xdg-user-dirs xdg-utils ttf-font-awesome qemu libvirt
 ```
  
 ---

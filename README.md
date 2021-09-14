@@ -64,7 +64,7 @@ mount /dev/nvme0n1p1 /mnt/boot
 ```
 
 ---
-#### 7. Create filesystems on encrypted partitions  
+#### 7. Create filesystems on encrypted partitions (NOT NEEDED FOR THE BTRFS)  
 ```
 mkfs.ext4 /dev/mapper/vg0-root (or mkfs.xfs /dev/mapper/vg0-root, but in case of xfs you also should install xfsprogs) or mkfs.btrfs (btrfs-progs)  
 mkswap /dev/mapper/vg0-swap

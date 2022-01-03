@@ -212,13 +212,13 @@ pacman -S gnome gnome-extra bluez bluez-utils pipewire pipewire-pulse networkman
 ---
 #### 24. Enable services
 ```
-systemctl enable lightdm bluetooth NetworkManager docker libvirtd systemd-timesyncd   
+systemctl enable lightdm bluetooth NetworkManager docker libvirtd systemd-timesyncd systemd-boot-update.service   
 systemctl enable --user pipewire-pulse.service  
 ```
 
 #### Or in case of GNOME:
 ```
-systemctl enable gdm bluetooth NetworkManager systemd-timesyncd libvirtd docker   
+systemctl enable gdm bluetooth NetworkManager systemd-timesyncd libvirtd docker systemd-boot-update.service  
 systemctl enable --user pipewire-pulse.service  
 ```
 

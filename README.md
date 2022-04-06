@@ -116,7 +116,7 @@ tmpfs /tmp tmpfs defaults,size=40G,noatime,mode=1777 0 0
 ---
 #### 13. Setup system clock
 ```
-ln -s /usr/share/zoneinfo/Europe/Minsk /etc/localtime <USE YOUR CITY!>
+ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime <USE YOUR CITY!>
 hwclock --systohc --utc
 ```
 
@@ -138,7 +138,7 @@ echo LANG=en_US.UTF-8 >> /etc/locale.conf (important for GNOME)
 #### 16. Set password for root and add user
 ```
 passwd
-useradd -mg users -G wheel,storage,power -s /bin/zsh <MYUSERNAME> (or /bin/bash)
+useradd -mg users -G wheel,storage,power -s /bin/fish <USERNAME>
 passwd <MYUSERNAME>
 
 visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
@@ -174,7 +174,7 @@ echo 'timeout 5' >> /boot/loader/loader.conf
 
 ---
 #### 21. Create arch.conf
-`vim /boot/loader/entries/arch.conf`
+`nvim /boot/loader/entries/arch.conf`
 
 ---
 

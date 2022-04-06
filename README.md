@@ -33,7 +33,7 @@ enter your password and exit (type exit -> enter)
 #### 5. Setup the encryption of the system with 512 bit effective size
 ```
 cryptsetup -c aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 3000 -y --use-random luksFormat /dev/nvme0n1p2
-cryptsetup luksOpen /dev/nvme0n1p2 luks
+cryptsetup open /dev/nvme0n1p2 luks
 ```
 
 ---

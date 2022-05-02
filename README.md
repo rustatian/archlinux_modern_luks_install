@@ -89,19 +89,6 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 Sample for the BTRFS
 ```
-# <file system> <dir> <type> <options> <dump> <pass>
-# /dev/mapper/luks
-UUID=4c0e019e-b646-477a-94d2-e4c35ddda975	/         	btrfs     	rw,noatime,nodiratime,compress=lzo,ssd,discard=async,space_cache,subvolid=256,subvol=/@	0 0
-
-# /dev/nvme0n1p1
-UUID=A819-B261      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
-
-# /dev/mapper/luks
-UUID=4c0e019e-b646-477a-94d2-e4c35ddda975	/home     	btrfs     	rw,noatime,nodiratime,compress=lzo,ssd,discard=async,space_cache,subvolid=257,subvol=/@home	0 0
-
-# /dev/nvme0n1p2
-UUID=2f7c1bfe-fb5a-43b3-9104-3b015bc57f81	none      	swap      	defaults  	0 0
-
 tmpfs /tmp tmpfs defaults,size=40G,noatime,mode=1777 0 0
 ```
 
@@ -116,14 +103,14 @@ tmpfs /tmp tmpfs defaults,size=40G,noatime,mode=1777 0 0
 ---
 #### 13. Setup system clock
 ```
-ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime <USE YOUR CITY!>
+ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc --utc
 ```
 
 ---
 
 #### 14. Set the hostname
-`echo <YOU HOST NAME> > /etc/hostname`  
+`echo rustatian > /etc/hostname`  
 
 ---
 ### Generate locale
@@ -138,8 +125,8 @@ echo LANG=en_US.UTF-8 >> /etc/locale.conf (important for GNOME)
 #### 16. Set password for root and add user
 ```
 passwd
-useradd -mg users -G wheel,storage,power -s /bin/fish <USERNAME>
-passwd <MYUSERNAME>
+useradd -mg users -G wheel,storage,power -s /bin/fish valery
+passwd valery
 
 visudo -> uncomment the following line --> %wheel ALL=(ALL) ALL
 
@@ -192,17 +179,13 @@ BTRFS
 title Arch Linux [rustatian]
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw nvidia-drm.modeset=1 
+options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks raid0.default_layout=2 rootflags=subvol=@ rw nvidia-drm.modeset=1 
 OR for the AMD
-options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rw radeon.si_support=0 radeon.cik_support=0 amdgpu.cik_support=1 amdgpu.si_support=1 amdgpu.dpm=1 amdgpu.ppfeaturemask=<EXECUTE printf "0x%08x\n" $(cat /sys/module/amdgpu/parameters/ppfeaturemask)">
+options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discards root=/dev/mapper/luks raid0.default_layout=2 rootflags=subvol=@ rw radeon.si_support=0 radeon.cik_support=0 amdgpu.cik_support=1 amdgpu.si_support=1 amdgpu.dpm=1 amdgpu.ppfeaturemask=<EXECUTE printf "0x%08x\n" $(cat /sys/module/amdgpu/parameters/ppfeaturemask)">
 ```
  
 ---
 #### 23. Install DE
-### XFCE:
-```
-pacman -S xorg xfce4 xfce4-goodies nvidia mesa mesa-demos lightdm lightdm-gtk-greeter pipewire pipewire-pulse blueman bluez bluez-utils networkmanager network-manager-applet gvfs gnome-keyring seahorse docker docker-compose llvm lldb gdb lld cmake perf strace tcpdump lsof iotop xdg-user-dirs xdg-utils ttf-font-awesome qemu libvirt
-```
 
 ### GNOME
 ```
@@ -212,19 +195,13 @@ pacman -S gnome gnome-extra bluez bluez-utils pipewire pipewire-pulse networkman
 ---
 #### 24. Enable services
 ```
-systemctl enable lightdm bluetooth NetworkManager docker libvirtd systemd-timesyncd systemd-boot-update.service   
-systemctl enable --user pipewire-pulse.service  
-```
-
-#### Or in case of GNOME:
-```
 systemctl enable gdm bluetooth NetworkManager systemd-timesyncd libvirtd docker systemd-boot-update.service  
 systemctl enable --user pipewire-pulse.service  
 ```
 
 #### Docker
 ```
-usermod -aG docker <YOU USERNAME>
+usermod -aG docker valery
 ```
 
 ---

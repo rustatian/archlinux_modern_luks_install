@@ -110,7 +110,10 @@ hwclock --systohc --utc
 ---
 
 #### 14. Set the hostname
-`echo rustatian > /etc/hostname`  
+
+```
+echo rustatian > /etc/hostname
+```
 
 ---
 ### Generate locale

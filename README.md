@@ -207,6 +207,18 @@ systemctl enable --user pipewire-pulse.service
 usermod -aG docker valery
 ```
 
+### Nvidia Wayland
+
+```bash
+cat >> /etc/modprobe.d/nvidia.conf <<EOF
+options nvidia NVreg_PreserveVideoMemoryAllocations=1
+options nvidia-drm modeset=1
+EOF
+mkinitcpio -p linux
+systemctl enable nvidia-{hibernate,suspend,resume}
+```   
+
+
 ---
 #### 25. Exit new system and go into the cd shell
 `exit`

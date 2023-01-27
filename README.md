@@ -81,7 +81,10 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 ---
 #### 9. Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
-`pacstrap /mnt base base-devel fish vim neovim git sudo efibootmgr systemd-resolvconf mdadm iw iwd ccache linux linux-headers linux-firmware intel-ucode btrfs-progs.
+
+```
+pacstrap /mnt base base-devel fish vim neovim git sudo efibootmgr systemd-resolvconf mdadm iw iwd ccache linux linux-headers linux-firmware intel-ucode btrfs-progs.
+```
 
 ---
 #### 10. Install fstab

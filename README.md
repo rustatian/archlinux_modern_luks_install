@@ -71,6 +71,14 @@ mkswap /dev/mapper/vg0-swap
 ```  
 
 ---
+
+#### My reinstall copy files:
+```
+cp root/.backups etc/iwd/main.conf etc/environment etc/makepkg.conf etc/pacman.conf etc/locale.gen etc/locale.conf etc/mkinitcpio.conf etc/crypttab etc/vconsole.conf etc/udev/rules.d/81-wifi-powersave.rules boot/loader/entries/ar
+ch.conf /mnt/root
+```
+
+---
 #### 8. Mount the new system (NOT NEEDED FOR THE BTRFS)
 ```
 mount /dev/mapper/vg0-root /mnt # /mnt is the installed system

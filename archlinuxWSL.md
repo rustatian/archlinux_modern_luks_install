@@ -42,7 +42,7 @@ wsl -d <desired_distro_name>
 #### Put the first mirror to the ArchLinux mirrorlist:
 
 ```
-echo echo 'Server = http://arch.midov.pl/arch/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+echo 'Server = http://arch.midov.pl/arch/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 ```
 
 #### Populate the ArchLinux keyring:

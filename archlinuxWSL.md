@@ -3,19 +3,19 @@
 #### Download a bootstrap archive:
 
 ```
-curl https://mirror.eloteam.tk/archlinux/iso/2023.02.01/archlinux-bootstrap-x86_64.tar.gz -o archlinux-bootstrap-x86_64.tar.gz
+curl https://ftp.icm.edu.pl/pub/Linux/dist/archlinux/iso/2023.06.01/archlinux-bootstrap-x86_64.tar.gz -o archlinux-bootstrap-x86_64.tar.gz
 ```
 
 #### Extract it:
 
 ```
-tar -xzf archlinux-bootstrap-x86_64.tar.gz
+sudo tar -xzf archlinux-bootstrap-x86_64.tar.gz
 ```
 
 #### Add root FS to the new archive:
 
 ```
-tar -czvf ArchWSL.tar.gz .
+sudo tar -czvf ../ArchWSL.tar.gz .
 ```
 
 #### Copy to the needed directory.

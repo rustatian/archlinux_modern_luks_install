@@ -43,7 +43,7 @@ swaplabel -L swappo /dev/nvme0n1p2
 swapon /dev/nvme0n1p2
 ```
 ```
-btrfs filesystem label root /dev/nvme0n1p3
+btrfs filesystem label /dev/nvme0n1p3 root
 ```
 
 ---

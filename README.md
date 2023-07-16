@@ -159,6 +159,12 @@ ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc --utc
 ```
 
+- /etc/vconsole.conf
+```
+FONT=ter-i32n
+FONT_MAP=8859-2
+```
+
 ---
 
 #### 14. Set the hostname

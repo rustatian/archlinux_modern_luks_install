@@ -189,7 +189,7 @@ localectl set-locale LANG=en_US.UTF-8
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 ```
 ```
-echo LANG=pl_PL.UTF-8 >> /etc/locale.conf
+echo LC_TIME=pl_PL.UTF-8 >> /etc/locale.conf
 ```
  ---
 #### 16. Set password for root and add user

@@ -271,13 +271,13 @@ options cryptdevice=UUID=c5936c6f-1db2-43dd-9797-35b75d416ded:luks:allow-discard
 ```
 
 --- NEW
-
+```
 title ArchLinux [rustatian]
 linux /vmlinuz-linux
 initrd /intel-ucode.img
 initrd /initramfs-linux.img
 options root=LABEL=root resume=LABEL=swappo raid0.default_layout=2 mem_sleep_default=deep rootflags=subvol=@ pcie_port_pm=off pcie_aspm.policy=performance rw nvidia-drm.modeset=1
-
+```
 ---
 #### 23. Install DE
 

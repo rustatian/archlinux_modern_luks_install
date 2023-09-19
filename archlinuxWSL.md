@@ -1,4 +1,4 @@
-#### IMPORTANT: Do these steps inside the Linux (or you might temporarily install Ubuntu WSL)
+#### IMPORTANT: Do these steps inside the Linux (you might temporarily install Ubuntu WSL)
 
 #### Download a bootstrap archive:
 

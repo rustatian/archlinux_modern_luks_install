@@ -12,6 +12,12 @@ curl https://ftp.icm.edu.pl/pub/Linux/dist/archlinux/iso/2023.06.01/archlinux-bo
 sudo tar -xzf archlinux-bootstrap-x86_64.tar.gz
 ```
 
+#### CD into the bootstrap directory:
+
+```
+cd root.x86_64/
+```
+
 #### Add root FS to the new archive:
 
 ```

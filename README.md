@@ -300,7 +300,7 @@ usermod -aG docker valery
 ```bash
 cat >> /etc/modprobe.d/nvidia.conf <<EOF
 options nvidia NVreg_PreserveVideoMemoryAllocations=1
-options nvidia-drm modeset=1
+options nvidia_drm modeset=1
 EOF
 ```
 ```

@@ -1,5 +1,5 @@
 ```
-mdadm --create --verbose --level=0 --metadata=1.2 --raid-devices=2 /dev/md/md1 /dev/nvme0n1p2 /dev/nvme1n1p2
+mdadm --create --verbose --level=0 --metadata=1.2 --homehost=linuxbox --raid-devices=2 /dev/md/md1 /dev/nvme0n1p2 /dev/nvme1n1p2
 ```
 
 ```
